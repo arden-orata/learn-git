@@ -2,9 +2,118 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Hello World</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arden</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #F9F9F8;
+      color: #212121;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px;
+    }
+
+    .card {
+      background-color: #FFFFFF;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+      border-radius: 16px;
+      padding: 64px 72px;
+      max-width: 640px;
+      width: 100%;
+    }
+
+    .label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: 2.75rem;
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .role {
+      font-size: 1rem;
+      font-weight: 400;
+      color: #666;
+      margin-bottom: 48px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #F0F0F0;
+      margin-bottom: 40px;
+    }
+
+    .interests {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .interest-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .interest-title {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #AAAAAA;
+    }
+
+    .interest-desc {
+      font-size: 0.975rem;
+      font-weight: 300;
+      color: #212121;
+      line-height: 1.6;
+    }
+  </style>
 </head>
 <body>
-  <h1>Hello World</h1>
+  <div class="card">
+    <p class="label">About</p>
+    <h1>Arden</h1>
+    <p class="role">Cloud Economics · AWS</p>
+    <hr class="divider">
+    <div class="interests">
+      <div class="interest-item">
+        <span class="interest-title">Work</span>
+        <span class="interest-desc">Finance and business case development at the intersection of cloud infrastructure and enterprise strategy.</span>
+      </div>
+      <div class="interest-item">
+        <span class="interest-title">Investing</span>
+        <span class="interest-desc">Deep focus on AI infrastructure — Nvidia, Broadcom, Micron, and SanDisk. Pattern recognition meets financial analysis.</span>
+      </div>
+      <div class="interest-item">
+        <span class="interest-title">Design</span>
+        <span class="interest-desc">A natural eye for visual detail. Drawn to the kind of clarity that most designers spend years learning to see.</span>
+      </div>
+      <div class="interest-item">
+        <span class="interest-title">Now</span>
+        <span class="interest-desc">Learning to build with AI — exploring Claude Code to turn ideas into products, fast.</span>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
