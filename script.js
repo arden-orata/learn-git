@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────
 // 1. Connect to Supabase
 // ─────────────────────────────────────────
-const supabase = window.supabase.createClient(
+const supabaseClient = window.supabase.createClient(
   'https://uhnybipmfdiwczkkskax.supabase.co',
   'sb_publishable_SburUvvdU0Aj-OFxcrqIWw_LkNCAQEm'
 )
@@ -17,14 +17,27 @@ const messagesList = document.getElementById('messages-list')
 const loading      = document.getElementById('loading')
 
 // ─────────────────────────────────────────
-// 3. Load messages from Supabase
+// 3. Create a message card element
+// ─────────────────────────────────────────
+function createCard(msg) {
+  const card = document.createElement('div')
+  card.className = 'message-card'
+  card.innerHTML = `
+    <p class="message-name">${msg.name}</p>
+    <p class="message-text">${msg.message}</p>
+  `
+  return card
+}
+
+// ─────────────────────────────────────────
+// 4. Load messages from Supabase (initial load only)
 // ─────────────────────────────────────────
 async function loadMessages() {
   loading.classList.remove('hidden')
   messagesList.innerHTML = ''
 
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from('messages')
       .select('*')
       .order('id', { ascending: false })
@@ -39,13 +52,7 @@ async function loadMessages() {
     }
 
     data.forEach(function(msg) {
-      const card = document.createElement('div')
-      card.className = 'message-card'
-      card.innerHTML = `
-        <p class="message-name">${msg.name}</p>
-        <p class="message-text">${msg.message}</p>
-      `
-      messagesList.appendChild(card)
+      messagesList.appendChild(createCard(msg))
     })
 
   } catch (err) {
@@ -56,7 +63,29 @@ async function loadMessages() {
 }
 
 // ─────────────────────────────────────────
-// 4. Submit a new message
+// 5. Prepend a new card with slide-down animation
+// ─────────────────────────────────────────
+function prependCard(msg) {
+  // Remove "no messages" placeholder if present
+  const empty = messagesList.querySelector('.empty')
+  if (empty) empty.remove()
+
+  const card = createCard(msg)
+  card.classList.add('card-enter')
+
+  // Insert at the top
+  messagesList.insertBefore(card, messagesList.firstChild)
+
+  // Trigger animation on next frame
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      card.classList.add('card-enter-active')
+    })
+  })
+}
+
+// ─────────────────────────────────────────
+// 6. Submit a new message
 // ─────────────────────────────────────────
 submitBtn.addEventListener('click', async function() {
   const name    = nameInput.value.trim()
@@ -75,18 +104,16 @@ submitBtn.addEventListener('click', async function() {
   submitBtn.textContent = 'Sending…'
 
   try {
-    const { error } = await supabase
+    const { error } = await supabaseClient
       .from('messages')
       .insert({ name, message })
 
     if (error) throw error
 
-    // Clear form
+    // Only update the DOM after confirmed save
     nameInput.value    = ''
     messageInput.value = ''
-
-    // Reload messages to show the new one
-    await loadMessages()
+    prependCard({ name, message })
 
   } catch (err) {
     formError.textContent = 'Something went wrong. Please try again.'
@@ -99,6 +126,6 @@ submitBtn.addEventListener('click', async function() {
 })
 
 // ─────────────────────────────────────────
-// 5. Load messages on page open
+// 7. Load messages on page open
 // ─────────────────────────────────────────
 loadMessages()
